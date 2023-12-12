@@ -1,0 +1,3 @@
+# We ignore all input files, on this case I saved them in a .txt
+
+*.txt
