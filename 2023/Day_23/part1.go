@@ -120,7 +120,7 @@ func walk(c tCursor) {
 	pDir := possibleDirections(c)
 
 	c.previous = c.current
-	c.steps ++
+	c.steps++
 	for _, p := range pDir {
 		c.current = p
 		walk(c)
@@ -154,4 +154,3 @@ func possibleDirections(c tCursor) []tPosition {
 
 	return p
 }
-
