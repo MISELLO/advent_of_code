@@ -63,7 +63,7 @@ func main() {
 
 	// Calculate
 	fmt.Println("There are two approaches for this and both need 3 hailstones.")
-	fmt.Println(" - A simple approach that need ceratin assumptions and bruteforce.")
+	fmt.Println(" - A simple approach that need certain assumptions and bruteforce.")
 	fmt.Println(" - Another approach that needs less assumptions and no bruteforce, but with more formulas and calculations.")
 	fmt.Println()
 	fmt.Println("We will try the first approach", TryTimes, "times before trying the second one.")
@@ -227,7 +227,7 @@ func secondApproach(r *int) {
 				}
 			}
 		}
-		fmt.Println("Unfortunatelly, we could not find the exact position and speed direction of the rock.")
+		fmt.Println("Unfortunately, we could not find the exact position and speed direction of the rock.")
 	}
 }
 

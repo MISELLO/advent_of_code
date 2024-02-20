@@ -43,7 +43,7 @@ func main() {
 	fmt.Println("Distance:", distanceList[1:])
 
 	if len(timeList) != len(distanceList) {
-		fmt.Println("Time list and distance list must have the same lenght.")
+		fmt.Println("Time list and distance list must have the same length.")
 		os.Exit(0)
 	}
 

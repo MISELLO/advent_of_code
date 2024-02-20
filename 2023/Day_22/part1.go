@@ -68,7 +68,7 @@ func main() {
 			res++
 		}
 	}
-	fmt.Printf("There are \033[1m%d\033[0m bricks that can be choosen as the one to get desintegrated.\n", res)
+	fmt.Printf("There are \033[1m%d\033[0m bricks that can be chosen as the one to get disintegrated.\n", res)
 }
 
 // New is the constructor of blocks.

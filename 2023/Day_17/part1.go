@@ -146,7 +146,7 @@ func aStar() int {
 	return -1
 }
 
-// h is an heuristic that returns an aproximate cost to reach the goal
+// h is an heuristic that returns an approximate cost to reach the goal
 // more specificly it calculates two possible routes:
 //
 //	One that goes first East and then South

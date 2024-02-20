@@ -57,7 +57,7 @@ func main() {
 	//  3.- Pressed the button for too much time
 	// We don't need to find all combinations 2 is satisfied,
 	// we just need to find the range 2 is satisfied and
-	// perform the differnece.
+	// perform the difference.
 
 	var lower, upper int
 

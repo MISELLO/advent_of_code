@@ -69,7 +69,7 @@ func main() {
 	}
 
 	// Result
-	fmt.Printf("The sum of the lenght of the shortest paths between every pair of galaxies is \033[1m%d\033[0m.\n", sum)
+	fmt.Printf("The sum of the length of the shortest paths between every pair of galaxies is \033[1m%d\033[0m.\n", sum)
 }
 
 // printUni prints a representation of the universe

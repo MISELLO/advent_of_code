@@ -59,7 +59,7 @@ func computeStr(h hand) handStr {
 			}
 		}
 	} else if len(m) == 4 {
-		// Four types of cards and 5 positions, ther must be One_pair
+		// Four types of cards and 5 positions, there must be One_pair
 		return One_pair
 	}
 	// All cards are different

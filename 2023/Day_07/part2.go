@@ -77,7 +77,7 @@ func computeStr(h hand) handStr {
 			}
 		}
 	} else if len(m) == 4 {
-		// Four types of cards and 5 positions, ther must be One_pair
+		// Four types of cards and 5 positions, there must be One_pair
 		// Or Three_of_a_kind considering J
 		if m["J"] != 0 {
 			return Three_of_a_kind

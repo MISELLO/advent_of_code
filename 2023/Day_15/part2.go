@@ -11,7 +11,7 @@ import (
 type tOperation int
 
 const (
-	asign tOperation = iota
+	assign tOperation = iota
 	remove
 )
 
@@ -94,7 +94,7 @@ func HolidayAsciiStringHelperAlgorithm(s string) int {
 func readCommand(s string) tCommand {
 	var c tCommand
 	if strings.Contains(s, "=") {
-		c.op = asign
+		c.op = assign
 		parts := strings.Split(s, "=")
 		c.label = parts[0]
 		c.focal, _ = strconv.Atoi(parts[1])
@@ -109,7 +109,7 @@ func readCommand(s string) tCommand {
 func (c *tCommand) executeCommand() {
 	index := HolidayAsciiStringHelperAlgorithm(c.label)
 	b := boxes[index]
-	if c.op == asign {
+	if c.op == assign {
 		found := false
 		for i := 0; i < len(b); i++ {
 			if b[i].label == c.label {
