@@ -68,15 +68,6 @@ func main() {
 	fmt.Printf("The focusing power of the resulting configuration is \033[1m%d\033[0m\n", totalFocusPower)
 }
 
-// printBoxes is a debug function to know the content of the boxes that are not empty.
-func printBoxes() {
-	for i := 0; i < len(boxes); i++ {
-		if len(boxes[i]) != 0 {
-			fmt.Println("Box", i, "-->", boxes[i])
-		}
-	}
-}
-
 // HolidayAsciiStringHelperAlgorithm (HASH for short) is a hash function that
 // given a string (s) it returns an integer between 0-255
 func HolidayAsciiStringHelperAlgorithm(s string) int {

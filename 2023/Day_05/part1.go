@@ -65,7 +65,6 @@ func main() {
 
 		if s == ini {
 			// Seeds
-			s = seeds
 			fmt.Println(" Loading seeds")
 			parts := strings.Split(l, ":")
 			seedNums := strings.Fields(parts[1])

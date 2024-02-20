@@ -377,13 +377,3 @@ func printMatrix(m [][]float64) {
 	fmt.Println()
 }
 
-// collideAll checks if the rock collides all the hailstones
-func collideAll(r tHailstone) bool {
-	for i, h := range hailList {
-		if !willCollide(r, h) {
-			fmt.Println(i, "Compared:", r, "and", h)
-			return false
-		}
-	}
-	return true
-}

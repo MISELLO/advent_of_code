@@ -10,8 +10,6 @@ import (
 
 var schematic []string
 
-var gearIDcount int = 1
-
 type number struct {
 	startX, startY, endX, endY int
 	// Note: As numbers are always horizontal endX will always be the same as startX
@@ -20,10 +18,6 @@ type number struct {
 }
 
 var numberList []number
-
-func (n *number) print() {
-	fmt.Println(schematic[n.startX][n.startY : n.endY+1])
-}
 
 func (n *number) value() int {
 	v, _ := strconv.Atoi(schematic[n.startX][n.startY : n.endY+1])

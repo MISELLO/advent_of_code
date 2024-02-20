@@ -49,7 +49,7 @@ func main() {
 	fmt.Println("Counting connections and changing groups ...")
 	fmt.Println("We have", len(nodes), "nodes.")
 	var x int
-	for n, _ := range nodes {
+	for n := range nodes {
 		// We will assign each node to a group with no criteria
 		tmp := nodes[n]
 		tmp.group = x%2 == 0
@@ -62,7 +62,7 @@ func main() {
 	separationLinks = sepCon()
 	for separationLinks > 3 {
 		fmt.Println("Iteration", iteration, "(we have ", separationLinks, "separation links)")
-		for n, _ := range nodes {
+		for n := range nodes {
 			if forceOneChange && noDifference(n) {
 				forceOneChange = false
 				tmp := nodes[n]

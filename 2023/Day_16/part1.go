@@ -52,29 +52,6 @@ func main() {
 	fmt.Printf("The total of energized tiles is \033[1m%d\033[0m\n", result)
 }
 
-// printGrids is a debug function that prints the laser grid and the
-// energized tiles grid
-func printGrids() {
-	for y := 0; y < len(laserGrid); y++ {
-		for x := 0; x < len(laserGrid[y]); x++ {
-			fmt.Printf("%s", string(laserGrid[y][x]))
-		}
-		fmt.Println("")
-	}
-	fmt.Println("")
-	for y := 0; y < len(energizedGrid); y++ {
-		for x := 0; x < len(energizedGrid[y]); x++ {
-			if energizedGrid[y][x] {
-				fmt.Printf("#")
-			} else {
-				fmt.Printf(".")
-			}
-		}
-		fmt.Println("")
-	}
-	fmt.Println("")
-}
-
 // New creates a new position for the laser starting at coordinates (0, 0)
 // and coming from the left (-1, 0)
 func (p *tPosition) New() {

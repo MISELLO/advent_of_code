@@ -177,7 +177,7 @@ func popMessage() tSignal {
 func processSignal(moduleInput map[string]bool, s tSignal) {
 
 	// Checks if the signal comes from one of the list.
-	for mName, _ := range moduleInput {
+	for mName := range moduleInput {
 		if mName == s.src && s.highPulse {
 			moduleCicle[s.src] = append(moduleCicle[s.src], buttonPushes)
 		}
@@ -216,7 +216,7 @@ func processSignal(moduleInput map[string]bool, s tSignal) {
 		// Check if all are high pulses
 		allHighPulses := true
 		for _, v := range m.input {
-			if v == false {
+			if !v {
 				allHighPulses = false
 				break
 			}
@@ -259,7 +259,7 @@ func revealLastModule() (string, tModule) {
 // a list (string) with the labels of all the input modules
 func getInputLabels(moduleInput map[string]bool) string {
 	var l string
-	for k, _ := range moduleInput {
+	for k := range moduleInput {
 		if len(l) != 0 {
 			l += ", " + k
 		} else {

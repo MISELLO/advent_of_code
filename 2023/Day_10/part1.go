@@ -40,8 +40,7 @@ func main() {
 	printField(field)
 
 	// We find the starting point
-	var s position
-	s = findStartingPoint(field)
+	s := findStartingPoint(field)
 	fmt.Printf("Starting point is (%d, %d)\n", s.x, s.y)
 	//fmt.Printf("Next should be (%d, %d) --> %c\n", s.x+1, s.y, field[s.y][s.x+1])
 

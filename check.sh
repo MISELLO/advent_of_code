@@ -10,3 +10,5 @@ echo "*** misspell ***"
 misspell .
 echo "*** golint ***"
 golint .
+
+#golangci-lint run main.go

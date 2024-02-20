@@ -84,17 +84,6 @@ func main() {
 	fmt.Printf("With %d steps, the elf can reach \033[1m%d\033[0m garden plots.\n", steps, res)
 }
 
-// printMap is a debug function that represents the gardenMap on the screen.
-func printMap() {
-	for y := 0; y < len(gardenMap); y++ {
-		for x := 0; x < len(gardenMap[y]); x++ {
-			fmt.Printf("%s", string(gardenMap[y][x]))
-		}
-		fmt.Println("")
-	}
-	fmt.Println("")
-}
-
 // findStartingPosition returns the position the elf has to start
 func findStartingPosition() tPosition {
 	for y := 0; y < len(gardenMap); y++ {
@@ -127,7 +116,7 @@ func moveElf(s int, v []int) {
 	}
 
 	// Doing the new steps
-	for p, _ := range oldPos {
+	for p := range oldPos {
 		var n tPosition
 
 		// North
@@ -179,7 +168,7 @@ func valid(p tPosition) bool {
 // copyMap copies the content of "b" into "a"
 // "a" must be empty
 func copyMap(a, b map[tPosition]bool) {
-	for p, _ := range b {
+	for p := range b {
 		a[p] = true
 	}
 }

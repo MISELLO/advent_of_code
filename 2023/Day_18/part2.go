@@ -12,10 +12,6 @@ type tPosition struct {
 	x, y int
 }
 
-// digMap is a representation of what surface is being excavated
-// false means not excavated, true means excavated
-var digMap [][]bool
-
 func main() {
 	if len(os.Args) != 2 {
 		fmt.Println("Please, provide just one file to analize.")
@@ -37,7 +33,6 @@ func main() {
 	// Load input
 	fmt.Println("Calculating ...")
 
-	// TODO
 	// We will use the Gauss's area formula (AKA Shoelace formula)
 	// A = 1/2 | Sum from i=1 to N of (Xi * Yi+1 - Xi+1 * Yi)|
 	// But this formula does not count half of the area of the

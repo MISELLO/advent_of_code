@@ -56,13 +56,6 @@ func main() {
 	fmt.Printf("The total load on the north support beams is \033[1m%d\033[0m\n", sum)
 }
 
-// printPlatform is a debug function that prints on the screen the current state of the platform
-func printPlatform() {
-	for i := 0; i < len(platform); i++ {
-		fmt.Println(string(platform[i]))
-	}
-}
-
 // moveRocksNorth moves all the rocks to north
 func moveRocksNorth() {
 	for y := 1; y < len(platform); y++ {

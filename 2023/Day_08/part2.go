@@ -180,17 +180,6 @@ func endZ(s string) bool {
 	return false
 }
 
-// allEndZ returns true if all the strings from the slice end with
-// the character 'Z'
-func allEndZ(ss []string) bool {
-	for i := 0; i < len(ss); i++ {
-		if !endZ(ss[i]) {
-			return false
-		}
-	}
-	return true
-}
-
 // allStepsSame returns true if all the steps of the list are the same and > 0
 func allStepsSame(sn []nodeSteps) bool {
 	if len(sn) == 0 {

@@ -40,8 +40,7 @@ func main() {
 	printField(field)
 
 	// We find the starting point
-	var s position
-	s = findStartingPoint(field)
+	s := findStartingPoint(field)
 	fmt.Printf("Starting point is (%d, %d)\n", s.x, s.y)
 
 	// We change the S from the original slice to it's corresponding pipe

@@ -201,7 +201,7 @@ func processSignal(s tSignal) {
 		// Check if all are high pulses
 		allHighPulses := true
 		for _, v := range m.input {
-			if v == false {
+			if !v {
 				allHighPulses = false
 				break
 			}

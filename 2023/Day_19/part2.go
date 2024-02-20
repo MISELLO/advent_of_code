@@ -56,8 +56,6 @@ func main() {
 			// Empty line
 			workflowLoad = false
 			fmt.Println("Processing the pieces ...")
-		} else {
-			// No need to process pieces
 		}
 	}
 
@@ -77,8 +75,7 @@ func main() {
 // error is not an option
 func parseWorkflow(s string) (string, []tRule) {
 	var resultingList []tRule
-	var tmp []string
-	tmp = strings.Split(s, "{")
+	tmp := strings.Split(s, "{")
 	label := tmp[0]
 	rest := tmp[1]
 	rest, _ = strings.CutSuffix(rest, "}")
@@ -118,7 +115,8 @@ func processLabel(itv tInterval, l string) int {
 	// We have to go deeper with that label
 	w := workflows[l]
 	var sum int
-	sat, noSat, remain := itv, itv, itv
+        var sat, noSat tInterval
+        remain := itv
 	for i := 0; i < len(w); i++ {
 		if hasOp(w[i]) {
 			sat, noSat = ifRule(remain, w[i])

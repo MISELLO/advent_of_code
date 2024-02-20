@@ -74,8 +74,7 @@ func main() {
 // error is not an option
 func parseWorkflow(s string) (string, []tRule) {
 	var resultingList []tRule
-	var tmp []string
-	tmp = strings.Split(s, "{")
+	tmp := strings.Split(s, "{")
 	label := tmp[0]
 	rest := tmp[1]
 	rest, _ = strings.CutSuffix(rest, "}")

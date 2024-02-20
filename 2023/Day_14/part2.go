@@ -82,13 +82,6 @@ func main() {
 	}
 }
 
-// printPlatform is a debug function that prints on the screen the current state of the platform
-func printPlatform() {
-	for i := 0; i < len(platform); i++ {
-		fmt.Println(string(platform[i]))
-	}
-}
-
 // moveRocksNorth moves all the rocks to the North
 func moveRocksNorth() {
 	for y := 1; y < len(platform); y++ {

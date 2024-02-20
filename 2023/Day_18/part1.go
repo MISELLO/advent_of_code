@@ -80,20 +80,6 @@ func main() {
 	fmt.Printf("The lagoon will hold up to \033[1m%d\033[0m cubic meters of lava.\n", res)
 }
 
-// printMap is a temporary function that represents the digMap on the screen
-func printMap() {
-	for y := 0; y < len(digMap); y++ {
-		for x := 0; x < len(digMap[0]); x++ {
-			if digMap[y][x] {
-				fmt.Print("#")
-			} else {
-				fmt.Print(".")
-			}
-		}
-		fmt.Println("")
-	}
-}
-
 // initMap initializes the digMap and returns the starting position
 func initMap() tPosition {
 	var p = tPosition{0, 0}

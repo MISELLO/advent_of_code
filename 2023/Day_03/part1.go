@@ -17,10 +17,6 @@ type number struct {
 
 var numberList []number
 
-func (n *number) print() {
-	fmt.Println(schematic[n.startX][n.startY : n.endY+1])
-}
-
 func (n *number) value() int {
 	v, _ := strconv.Atoi(schematic[n.startX][n.startY : n.endY+1])
 	return v
