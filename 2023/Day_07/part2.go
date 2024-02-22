@@ -61,35 +61,20 @@ func computeStr(h hand) handStr {
 		// Or Four_of_a_kind or Full_house considering J
 		for _, n := range m {
 			if n == 3 {
-				if m["J"] != 0 {
-					return Four_of_a_kind
-				}
-				return Three_of_a_kind
+				return threeOrFourOfAKind(m["J"])
 			}
 			if n == 2 {
-				if m["J"] == 1 {
-					return Full_house
-				}
-				if m["J"] == 2 {
-					return Four_of_a_kind
-				}
-				return Two_pair
+				return twoPairFullHouseOrFourOfAKind(m["J"])
 			}
 		}
 	} else if len(m) == 4 {
 		// Four types of cards and 5 positions, there must be One_pair
 		// Or Three_of_a_kind considering J
-		if m["J"] != 0 {
-			return Three_of_a_kind
-		}
-		return One_pair
+		return OnePairOrthreeOfAKind(m["J"])
 	}
 	// All cards are different
 	// Or we have one pair if there is one J
-	if m["J"] != 0 {
-		return One_pair
-	}
-	return High_card
+	return OnePairOrHighCard(m["J"])
 }
 
 func handCmp(a, b hand) int {
@@ -169,4 +154,35 @@ func main() {
 		total += (i + 1) * handList[i].bet
 	}
 	fmt.Println("The total winning is", total)
+}
+
+func threeOrFourOfAKind(numJ int) handStr {
+	if numJ != 0 {
+		return Four_of_a_kind
+	}
+	return Three_of_a_kind
+}
+
+func twoPairFullHouseOrFourOfAKind(numJ int) handStr {
+	if numJ == 1 {
+		return Full_house
+	}
+	if numJ == 2 {
+		return Four_of_a_kind
+	}
+	return Two_pair
+}
+
+func OnePairOrthreeOfAKind(numJ int) handStr {
+	if numJ != 0 {
+		return Three_of_a_kind
+	}
+	return One_pair
+}
+
+func OnePairOrHighCard(numJ int) handStr {
+	if numJ != 0 {
+		return One_pair
+	}
+	return High_card
 }

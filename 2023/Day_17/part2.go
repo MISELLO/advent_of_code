@@ -104,29 +104,28 @@ func aStar() int {
 	pending[startDown.status] = startDown.costF
 
 	for available.Len() > 0 {
-		//fmt.Println("available nodes:", available.Len(), "visited nodes:", len(visited))
 
 		// We get the lower node
 		n := heap.Pop(available).(tNode)
 
 		// Check if it is the last point
-		if canStopOrTurn(n) && n.status.pos.x == len(heatLossMap[0])-1 && n.status.pos.y == len(heatLossMap)-1 {
+		if onLastPoint(n) {
 			return n.costF
 		}
 
 		// Neighbours
 		nl := turnLeft(n)
-		if inBounds(nl) && !visited[nl.status] && canStopOrTurn(n) {
+		if canGoOn(n, nl, visited) {
 			x, e := pending[nl.status]
-			if (e && x > nl.costF) || !e {
+			if isGreaterOrNotExists(x, nl.costF, e) {
 				heap.Push(available, nl)
 				pending[nl.status] = nl.costF
 			}
 		}
 		nr := turnRight(n)
-		if inBounds(nr) && !visited[nr.status] && canStopOrTurn(n) {
+		if canGoOn(n, nr, visited) {
 			x, e := pending[nr.status]
-			if (e && x > nr.costF) || !e {
+			if isGreaterOrNotExists(x, nr.costF, e) {
 				heap.Push(available, nr)
 				pending[nr.status] = nr.costF
 			}
@@ -134,7 +133,7 @@ func aStar() int {
 		ns := goStraight(n)
 		if inBounds(ns) && !visited[ns.status] && canGoStraight(n) {
 			x, e := pending[ns.status]
-			if (e && x > ns.costF) || !e {
+			if isGreaterOrNotExists(x, ns.costF, e) {
 				heap.Push(available, ns)
 				pending[ns.status] = ns.costF
 			}
@@ -242,4 +241,19 @@ func canStopOrTurn(n tNode) bool {
 // straight direction
 func canGoStraight(n tNode) bool {
 	return n.status.steps < maxStepsStraight
+}
+
+// On Last Point
+func onLastPoint(n tNode) bool {
+	return canStopOrTurn(n) && n.status.pos.x == len(heatLossMap[0])-1 && n.status.pos.y == len(heatLossMap)-1
+}
+
+// Can Go On
+func canGoOn(n, nx tNode, visited map[tStatus]bool) bool {
+	return inBounds(nx) && !visited[nx.status] && canStopOrTurn(n)
+}
+
+// Is Greater Or Not Exists
+func isGreaterOrNotExists(x, n int, e bool) bool {
+	return (e && x > n) || !e
 }

@@ -376,4 +376,3 @@ func printMatrix(m [][]float64) {
 	}
 	fmt.Println()
 }
-

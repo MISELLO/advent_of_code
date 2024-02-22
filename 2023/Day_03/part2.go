@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	//"strings"
 )
 
 var schematic []string
@@ -69,57 +68,11 @@ func (n *number) updateGears() {
 		west = schematic[n.startX][n.startY-1 : n.startY]
 	}
 
-	fmt.Print("N:", north, "S:", south, "E:", east, "W:", west)
 	n.hasGear = false
 
-	// Checking north
-	for i, c := range north {
-		if c == '*' {
-			n.hasGear = true
-			fmt.Print(" -->Tn<--")
-			n.gearX = n.startX - 1
-			if n.startY > 0 {
-				n.gearY = n.startY - 1 + i
-			} else {
-				n.gearY = n.startY + i
-			}
-		}
-	}
+	// Check directions
+	checkDirections(n, north, south, east, west)
 
-	// Checking south
-	for i, c := range south {
-		if c == '*' {
-			n.hasGear = true
-			fmt.Print(" -->Ts<--")
-			n.gearX = n.startX + 1
-			if n.startY > 0 {
-				n.gearY = n.startY - 1 + i
-			} else {
-				n.gearY = n.startY + i
-			}
-		}
-	}
-
-	// Checking east
-	for _, c := range east {
-		if c == '*' {
-			n.hasGear = true
-			fmt.Print(" -->Te<--")
-			n.gearX = n.startX
-			n.gearY = n.endY + 1
-		}
-	}
-
-	// Checking west
-	for _, c := range west {
-		if c == '*' {
-			n.hasGear = true
-			fmt.Print(" -->Tw<--")
-			n.gearX = n.startX
-			n.gearY = n.startY - 1
-		}
-	}
-	fmt.Println("")
 }
 
 func main() {
@@ -150,6 +103,82 @@ func main() {
 	fmt.Println("Schematic loaded")
 
 	// Numbers
+	loadNumbers()
+
+	// Gears
+	fmt.Println("Updating Gears")
+	for i := 0; i < len(numberList); i++ {
+		numberList[i].updateGears()
+	}
+	fmt.Println("Gears updated")
+
+	var sum int
+	fmt.Println("Getting gear pairs")
+	for i := 0; i < len(numberList); i++ {
+		if numberList[i].hasGear {
+			gX := numberList[i].gearX
+			gY := numberList[i].gearY
+			for j := i + 1; j < len(numberList); j++ {
+				if numberList[j].hasGear && numberList[j].gearX == gX && numberList[j].gearY == gY {
+					// Same gear, different numbers
+					sum += numberList[i].value() * numberList[j].value()
+				}
+			}
+		}
+	}
+
+	fmt.Println("The sum of the gear ratios is", sum)
+}
+
+// checkDirections
+func checkDirections(n *number, north, south, east, west string) {
+	// Checking north
+	for i, c := range north {
+		if c == '*' {
+			n.hasGear = true
+			n.gearX = n.startX - 1
+			if n.startY > 0 {
+				n.gearY = n.startY - 1 + i
+			} else {
+				n.gearY = n.startY + i
+			}
+		}
+	}
+
+	// Checking south
+	for i, c := range south {
+		if c == '*' {
+			n.hasGear = true
+			n.gearX = n.startX + 1
+			if n.startY > 0 {
+				n.gearY = n.startY - 1 + i
+			} else {
+				n.gearY = n.startY + i
+			}
+		}
+	}
+
+	// Checking east
+	for _, c := range east {
+		if c == '*' {
+			n.hasGear = true
+			n.gearX = n.startX
+			n.gearY = n.endY + 1
+		}
+	}
+
+	// Checking west
+	for _, c := range west {
+		if c == '*' {
+			n.hasGear = true
+			n.gearX = n.startX
+			n.gearY = n.startY - 1
+		}
+	}
+}
+
+// load Numbers
+func loadNumbers() {
 	for i, v := range schematic {
 		numFound := false
 		var n number
@@ -175,31 +204,4 @@ func main() {
 			}
 		}
 	}
-
-	// Gears
-	fmt.Println("Updating Gears")
-	for i := 0; i < len(numberList); i++ {
-		fmt.Print(numberList[i].value(), "* -")
-		numberList[i].updateGears()
-	}
-	fmt.Println("Gears updated")
-
-	var sum int
-	fmt.Println("Getting gear pairs")
-	for i := 0; i < len(numberList); i++ {
-		if numberList[i].hasGear {
-			fmt.Println(numberList[i].value(), numberList[i].hasGear, "(", numberList[i].gearX, ",", numberList[i].gearY, ")")
-			gX := numberList[i].gearX
-			gY := numberList[i].gearY
-			for j := i + 1; j < len(numberList); j++ {
-				if numberList[j].hasGear && numberList[j].gearX == gX && numberList[j].gearY == gY {
-					// Same gear, different numbers
-					fmt.Println(numberList[i].value(), "*", numberList[j].value())
-					sum += numberList[i].value() * numberList[j].value()
-				}
-			}
-		}
-	}
-
-	fmt.Println("The sum of the gear ratios is", sum)
 }

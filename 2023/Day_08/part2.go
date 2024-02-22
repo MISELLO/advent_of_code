@@ -128,16 +128,7 @@ func main() {
 
 	// Calculating the steps to get all paths from ??A to ??Z
 	fmt.Println("Calculating steps using LCM")
-	var result int
-	var first bool = true
-	for _, ns := range Cicles {
-		if first {
-			result = ns.steps
-			first = false
-		} else {
-			result = LCM(result, ns.steps)
-		}
-	}
+	result := calculateWithLCM()
 	fmt.Println("Our first approach tells us the number of steps are", result)
 
 	fmt.Println("Calculating steps doing displacements, this might take a while... (CTRL + C to cancel)")
@@ -233,4 +224,19 @@ func EuclidesGCD(a, b int) int {
 // LCM(a,b) = a * b / GCD(a,b)
 func LCM(a, b int) int {
 	return a * b / EuclidesGCD(a, b)
+}
+
+// calculateWithLCM
+func calculateWithLCM() int {
+	var result int
+	var first bool = true
+	for _, ns := range Cicles {
+		if first {
+			result = ns.steps
+			first = false
+		} else {
+			result = LCM(result, ns.steps)
+		}
+	}
+	return result
 }

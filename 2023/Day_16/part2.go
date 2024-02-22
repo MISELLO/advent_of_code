@@ -92,7 +92,7 @@ func EnergizedTiles() int {
 func (p *tPosition) Run() {
 
 	// Check if out of bounds
-	if p.x < 0 || p.y < 0 || p.x >= len(laserGrid[0]) || p.y >= len(laserGrid) {
+	if !isInBounds(*p) {
 		return
 	}
 
@@ -107,95 +107,14 @@ func (p *tPosition) Run() {
 	p.Energize()
 
 	// Performing next move
-	c := laserGrid[p.y][p.x]
-	if p.x == p.oldX && p.y < p.oldY { // Going North
-		p.oldX, p.oldY = p.x, p.y
-		switch c {
-		case '.':
-			p.y = p.y - 1
-			p.Run()
-		case '/':
-			p.x = p.x + 1
-			p.Run()
-		case '\\':
-			p.x = p.x - 1
-			p.Run()
-		case '|':
-			p.y = p.y - 1
-			p.Run()
-		case '-':
-			q := *p
-			p.x = p.x + 1
-			q.x = q.x - 1
-			p.Run()
-			q.Run()
-		}
-	} else if p.x > p.oldX && p.y == p.oldY { // Going East
-		p.oldX, p.oldY = p.x, p.y
-		switch c {
-		case '.':
-			p.x = p.x + 1
-			p.Run()
-		case '/':
-			p.y = p.y - 1
-			p.Run()
-		case '\\':
-			p.y = p.y + 1
-			p.Run()
-		case '|':
-			q := *p
-			p.y = p.y - 1
-			q.y = q.y + 1
-			p.Run()
-			q.Run()
-		case '-':
-			p.x = p.x + 1
-			p.Run()
-		}
-	} else if p.x == p.oldX && p.y > p.oldY { // Going South
-		p.oldX, p.oldY = p.x, p.y
-		switch c {
-		case '.':
-			p.y = p.y + 1
-			p.Run()
-		case '/':
-			p.x = p.x - 1
-			p.Run()
-		case '\\':
-			p.x = p.x + 1
-			p.Run()
-		case '|':
-			p.y = p.y + 1
-			p.Run()
-		case '-':
-			q := *p
-			p.x = p.x - 1
-			q.x = q.x + 1
-			p.Run()
-			q.Run()
-		}
-	} else if p.x < p.oldX && p.y == p.oldY { // Going West
-		p.oldX, p.oldY = p.x, p.y
-		switch c {
-		case '.':
-			p.x = p.x - 1
-			p.Run()
-		case '/':
-			p.y = p.y + 1
-			p.Run()
-		case '\\':
-			p.y = p.y - 1
-			p.Run()
-		case '|':
-			q := *p
-			p.y = p.y - 1
-			q.y = q.y + 1
-			p.Run()
-			q.Run()
-		case '-':
-			p.x = p.x - 1
-			p.Run()
-		}
+	if goingN(*p) {
+		performN(p)
+	} else if goingE(*p) {
+		performE(p)
+	} else if goingS(*p) {
+		performS(p)
+	} else if goingW(*p) {
+		performW(p)
 	}
 }
 
@@ -216,4 +135,134 @@ func AllPossibleStartingPositions() []tPosition {
 	}
 
 	return pos
+}
+
+// isInBounds returns true if the point (p) is
+// inside the laserGrid.
+func isInBounds(p tPosition) bool {
+	return p.x >= 0 && p.x < len(laserGrid[0]) && p.y >= 0 && p.y < len(laserGrid)
+}
+
+// Going North
+func goingN(p tPosition) bool {
+	return p.x == p.oldX && p.y < p.oldY
+}
+
+// Going East
+func goingE(p tPosition) bool {
+	return p.x > p.oldX && p.y == p.oldY
+}
+
+// Going South
+func goingS(p tPosition) bool {
+	return p.x == p.oldX && p.y > p.oldY
+}
+
+// Going West
+func goingW(p tPosition) bool {
+	return p.x < p.oldX && p.y == p.oldY
+}
+
+// Perform North
+func performN(p *tPosition) {
+	c := laserGrid[p.y][p.x]
+	p.oldX, p.oldY = p.x, p.y
+	switch c {
+	case '.':
+		p.y = p.y - 1
+		p.Run()
+	case '/':
+		p.x = p.x + 1
+		p.Run()
+	case '\\':
+		p.x = p.x - 1
+		p.Run()
+	case '|':
+		p.y = p.y - 1
+		p.Run()
+	case '-':
+		q := *p
+		p.x = p.x + 1
+		q.x = q.x - 1
+		p.Run()
+		q.Run()
+	}
+}
+
+// Perform East
+func performE(p *tPosition) {
+	c := laserGrid[p.y][p.x]
+	p.oldX, p.oldY = p.x, p.y
+	switch c {
+	case '.':
+		p.x = p.x + 1
+		p.Run()
+	case '/':
+		p.y = p.y - 1
+		p.Run()
+	case '\\':
+		p.y = p.y + 1
+		p.Run()
+	case '|':
+		q := *p
+		p.y = p.y - 1
+		q.y = q.y + 1
+		p.Run()
+		q.Run()
+	case '-':
+		p.x = p.x + 1
+		p.Run()
+	}
+}
+
+// Perform South
+func performS(p *tPosition) {
+	c := laserGrid[p.y][p.x]
+	p.oldX, p.oldY = p.x, p.y
+	switch c {
+	case '.':
+		p.y = p.y + 1
+		p.Run()
+	case '/':
+		p.x = p.x - 1
+		p.Run()
+	case '\\':
+		p.x = p.x + 1
+		p.Run()
+	case '|':
+		p.y = p.y + 1
+		p.Run()
+	case '-':
+		q := *p
+		p.x = p.x - 1
+		q.x = q.x + 1
+		p.Run()
+		q.Run()
+	}
+}
+
+// Perform West
+func performW(p *tPosition) {
+	c := laserGrid[p.y][p.x]
+	p.oldX, p.oldY = p.x, p.y
+	switch c {
+	case '.':
+		p.x = p.x - 1
+		p.Run()
+	case '/':
+		p.y = p.y + 1
+		p.Run()
+	case '\\':
+		p.y = p.y - 1
+		p.Run()
+	case '|':
+		q := *p
+		p.y = p.y - 1
+		q.y = q.y + 1
+		p.Run()
+		q.Run()
+	case '-':
+		p.x = p.x - 1
+		p.Run()
+	}
 }

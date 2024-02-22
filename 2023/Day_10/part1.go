@@ -37,7 +37,6 @@ func main() {
 		field = append(field, []byte(l))
 	}
 	fmt.Println("Map loaded.")
-	printField(field)
 
 	// We find the starting point
 	s := findStartingPoint(field)
@@ -54,16 +53,6 @@ func main() {
 
 	// Result
 	fmt.Printf("Steps to perform a loop: %d, \033[1m%d\033[0m to reach the furthest point.\n", steps, steps/2)
-}
-
-// printField is a temporal function that prints a representation of the map.
-func printField(f [][]byte) {
-	for j := 0; j < len(f); j++ {
-		for i := 0; i < len(f[j]); i++ {
-			fmt.Printf("%c", f[j][i])
-		}
-		fmt.Println("")
-	}
 }
 
 // findStartingPoint returns the position where to start
@@ -85,22 +74,22 @@ func (s *position) Next(f [][]byte) {
 	// Starting position
 	if s.x == s.oldX && s.y == s.oldY {
 		// North
-		if s.y > 0 && (f[s.y-1][s.x] == '|' || f[s.y-1][s.x] == '7' || f[s.y-1][s.x] == 'F') {
+		if canGoN(f, s) {
 			s.y = s.y - 1
 			return
 		}
 		// East
-		if s.x < len(f[0])-1 && (f[s.y+1][s.x] == '-' || f[s.y+1][s.x] == '7' || f[s.y+1][s.x] == 'J') {
+		if canGoE(f, s) {
 			s.x = s.x + 1
 			return
 		}
 		// South
-		if s.y < len(f)-1 && (f[s.y+1][s.x] == '|' || f[s.y+1][s.x] == 'L' || f[s.y+1][s.x] == 'J') {
+		if canGoS(f, s) {
 			s.y = s.y + 1
 			return
 		}
 		// West
-		if s.x > 0 && (f[s.y][s.x-1] == '-' || f[s.y][s.x-1] == 'L' || f[s.y][s.x-1] == 'F') {
+		if canGoW(f, s) {
 			s.x = s.x - 1
 			return
 		}
@@ -109,55 +98,111 @@ func (s *position) Next(f [][]byte) {
 	// Middle and ending positions
 	switch f[s.y][s.x] {
 	case '|':
-		if s.y > s.oldY { // From North to South
-			s.oldX, s.oldY = s.x, s.y
-			s.y = s.y + 1
-		} else { //          From South to North
-			s.oldX, s.oldY = s.x, s.y
-			s.y = s.y - 1
-		}
+		dirNorthSouth(s)
 	case '-':
-		if s.x > s.oldX { // From West to East
-			s.oldX, s.oldY = s.x, s.y
-			s.x = s.x + 1
-		} else { //          From East to West
-			s.oldX, s.oldY = s.x, s.y
-			s.x = s.x - 1
-		}
+		dirWestEast(s)
 	case 'L':
-		if s.y > s.oldY { // From North to East
-			s.oldX, s.oldY = s.x, s.y
-			s.x = s.x + 1
-		} else { //          From East to North
-			s.oldX, s.oldY = s.x, s.y
-			s.y = s.y - 1
-		}
+		dirNorthEast(s)
 	case 'J':
-		if s.y > s.oldY { // From North to West
-			s.oldX, s.oldY = s.x, s.y
-			s.x = s.x - 1
-		} else { //          From West to North
-			s.oldX, s.oldY = s.x, s.y
-			s.y = s.y - 1
-		}
+		dirNorthWest(s)
 	case '7':
-		if s.y < s.oldY { // From South to West
-			s.oldX, s.oldY = s.x, s.y
-			s.x = s.x - 1
-		} else { //          From West to South
-			s.oldX, s.oldY = s.x, s.y
-			s.y = s.y + 1
-		}
+		dirSouthWest(s)
 	case 'F':
-		if s.y < s.oldY { // From South to East
-			s.oldX, s.oldY = s.x, s.y
-			s.x = s.x + 1
-		} else { //          From East to South
-			s.oldX, s.oldY = s.x, s.y
-			s.y = s.y + 1
-		}
+		dirSouthEast(s)
 	case 'S':
 		// Doesn't matter from where, this is the end and we stay here
 		s.oldX, s.oldY = s.x, s.y
+	}
+}
+
+// isInBounds returns true if the point represented by x and y is
+// inside the 2D slice f.
+func isInBounds(f [][]byte, x, y int) bool {
+	return x >= 0 && x < len(f[0]) && y >= 0 && y < len(f)
+}
+
+// canGoN returns true if we can go to the North
+func canGoN(f [][]byte, p *position) bool {
+	return isInBounds(f, p.x, p.y-1) && (f[p.y-1][p.x] == '|' || f[p.y-1][p.x] == '7' || f[p.y-1][p.x] == 'F')
+}
+
+// canGoE returns true if we can go to the East
+func canGoE(f [][]byte, p *position) bool {
+	return isInBounds(f, p.x+1, p.y) && (f[p.y+1][p.x] == '-' || f[p.y+1][p.x] == '7' || f[p.y+1][p.x] == 'J')
+}
+
+// canGoS returns true if we can go to the South
+func canGoS(f [][]byte, p *position) bool {
+	return isInBounds(f, p.x, p.y+1) && (f[p.y+1][p.x] == '|' || f[p.y+1][p.x] == 'L' || f[p.y+1][p.x] == 'J')
+}
+
+// cangoW returns true if we can go to the West
+func canGoW(f [][]byte, p *position) bool {
+	return isInBounds(f, p.x-1, p.y) && (f[p.y][p.x-1] == '-' || f[p.y][p.x-1] == 'L' || f[p.y][p.x-1] == 'F')
+}
+
+// Direction North South
+func dirNorthSouth(s *position) {
+	if s.y > s.oldY { // From North to South
+		s.oldX, s.oldY = s.x, s.y
+		s.y = s.y + 1
+	} else { //          From South to North
+		s.oldX, s.oldY = s.x, s.y
+		s.y = s.y - 1
+	}
+}
+
+// Direction West East
+func dirWestEast(s *position) {
+	if s.x > s.oldX { // From West to East
+		s.oldX, s.oldY = s.x, s.y
+		s.x = s.x + 1
+	} else { //          From East to West
+		s.oldX, s.oldY = s.x, s.y
+		s.x = s.x - 1
+	}
+}
+
+// Direction North East
+func dirNorthEast(s *position) {
+	if s.y > s.oldY { // From North to East
+		s.oldX, s.oldY = s.x, s.y
+		s.x = s.x + 1
+	} else { //          From East to North
+		s.oldX, s.oldY = s.x, s.y
+		s.y = s.y - 1
+	}
+}
+
+// Direction North West
+func dirNorthWest(s *position) {
+	if s.y > s.oldY { // From North to West
+		s.oldX, s.oldY = s.x, s.y
+		s.x = s.x - 1
+	} else { //          From West to North
+		s.oldX, s.oldY = s.x, s.y
+		s.y = s.y - 1
+	}
+}
+
+// Direction South West
+func dirSouthWest(s *position) {
+	if s.y < s.oldY { // From South to West
+		s.oldX, s.oldY = s.x, s.y
+		s.x = s.x - 1
+	} else { //          From West to South
+		s.oldX, s.oldY = s.x, s.y
+		s.y = s.y + 1
+	}
+}
+
+// Direction South East
+func dirSouthEast(s *position) {
+	if s.y < s.oldY { // From South to East
+		s.oldX, s.oldY = s.x, s.y
+		s.x = s.x + 1
+	} else { //          From East to South
+		s.oldX, s.oldY = s.x, s.y
+		s.y = s.y + 1
 	}
 }

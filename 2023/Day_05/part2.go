@@ -1,7 +1,3 @@
-/*
- This is the same as part2A.go but with goroutines (faster)
-*/
-
 package main
 
 import (
@@ -18,21 +14,14 @@ type statusT int
 const (
 	ini statusT = iota
 	seeds
-	seedsEnd
 	soil
-	soilEnd
 	fertilizer
-	fertilizerEnd
 	water
-	waterEnd
 	light
-	lightEnd
 	temperature
-	temperatureEnd
 	humidity
-	humidityEnd
 	location
-	locationEnd
+	end
 )
 
 type mapT struct {
@@ -64,165 +53,8 @@ func main() {
 	scn := bufio.NewScanner(f)
 
 	fmt.Println("Loading almanac")
-	var s statusT = ini
-	for scn.Scan() {
-		l := scn.Text()
-
-		if s == ini {
-			// Seeds
-			fmt.Println(" Loading seeds")
-			parts := strings.Split(l, ":")
-			seedNums := strings.Fields(parts[1])
-			for i := 0; i < len(seedNums); i++ {
-				n, _ := strconv.Atoi(seedNums[i])
-				seedsList = append(seedsList, n)
-			}
-			s = seedsEnd
-		} else if s == seedsEnd || s == soil {
-			// Soil
-			if s == seedsEnd {
-				if strings.Contains(l, "seed-to-soil") {
-					s = soil
-					fmt.Println(" Loading seed-to-soil map")
-				}
-			} else if s == soil {
-				if l != "" {
-					nums := strings.Fields(l)
-					var m mapT
-					m.dst, _ = strconv.Atoi(nums[0])
-					m.src, _ = strconv.Atoi(nums[1])
-					m.ran, _ = strconv.Atoi(nums[2])
-					toSoil = append(toSoil, m)
-				} else {
-					s = soilEnd
-				}
-			}
-		} else if s == soilEnd || s == fertilizer {
-			// Fertilizer
-			if s == soilEnd {
-				if strings.Contains(l, "soil-to-fertilizer") {
-					s = fertilizer
-					fmt.Println(" Loading soil-to-fertilizer map")
-				}
-			} else if s == fertilizer {
-				if l != "" {
-					nums := strings.Fields(l)
-					var m mapT
-					m.dst, _ = strconv.Atoi(nums[0])
-					m.src, _ = strconv.Atoi(nums[1])
-					m.ran, _ = strconv.Atoi(nums[2])
-					toFertilizer = append(toFertilizer, m)
-				} else {
-					s = fertilizerEnd
-				}
-			}
-		} else if s == fertilizerEnd || s == water {
-			// Water
-			if s == fertilizerEnd {
-				if strings.Contains(l, "fertilizer-to-water") {
-					s = water
-					fmt.Println(" Loading fertilizer-to-water map")
-				}
-			} else if s == water {
-				if l != "" {
-					nums := strings.Fields(l)
-					var m mapT
-					m.dst, _ = strconv.Atoi(nums[0])
-					m.src, _ = strconv.Atoi(nums[1])
-					m.ran, _ = strconv.Atoi(nums[2])
-					toWater = append(toWater, m)
-				} else {
-					s = waterEnd
-				}
-			}
-		} else if s == waterEnd || s == light {
-			// Light
-			if s == waterEnd {
-				if strings.Contains(l, "water-to-light") {
-					s = light
-					fmt.Println(" Loading water-to-light map")
-				}
-			} else if s == light {
-				if l != "" {
-					nums := strings.Fields(l)
-					var m mapT
-					m.dst, _ = strconv.Atoi(nums[0])
-					m.src, _ = strconv.Atoi(nums[1])
-					m.ran, _ = strconv.Atoi(nums[2])
-					toLight = append(toLight, m)
-				} else {
-					s = lightEnd
-				}
-			}
-		} else if s == lightEnd || s == temperature {
-			// Temperature
-			if s == lightEnd {
-				if strings.Contains(l, "light-to-temperature") {
-					s = temperature
-					fmt.Println(" Loading light-to-temperature map")
-				}
-			} else if s == temperature {
-				if l != "" {
-					nums := strings.Fields(l)
-					var m mapT
-					m.dst, _ = strconv.Atoi(nums[0])
-					m.src, _ = strconv.Atoi(nums[1])
-					m.ran, _ = strconv.Atoi(nums[2])
-					toTemperature = append(toTemperature, m)
-				} else {
-					s = temperatureEnd
-				}
-			}
-		} else if s == temperatureEnd || s == humidity {
-			// Humidity
-			if s == temperatureEnd {
-				if strings.Contains(l, "temperature-to-humidity") {
-					s = humidity
-					fmt.Println(" Loading temperature-to-humidity map")
-				}
-			} else if s == humidity {
-				if l != "" {
-					nums := strings.Fields(l)
-					var m mapT
-					m.dst, _ = strconv.Atoi(nums[0])
-					m.src, _ = strconv.Atoi(nums[1])
-					m.ran, _ = strconv.Atoi(nums[2])
-					toHumidity = append(toHumidity, m)
-				} else {
-					s = humidityEnd
-				}
-			}
-		} else if s == humidityEnd || s == location {
-			// Location
-			if s == humidityEnd {
-				if strings.Contains(l, "humidity-to-location") {
-					s = location
-					fmt.Println(" Loading humidity-to-location map")
-				}
-			} else if s == location {
-				if l != "" {
-					nums := strings.Fields(l)
-					var m mapT
-					m.dst, _ = strconv.Atoi(nums[0])
-					m.src, _ = strconv.Atoi(nums[1])
-					m.ran, _ = strconv.Atoi(nums[2])
-					toLocation = append(toLocation, m)
-				} else {
-					s = locationEnd
-				}
-			}
-		}
-	}
+	load(scn)
 	fmt.Println("Almanac loaded")
-	//fmt.Println(" - The seeds are:", seedsList)
-	//fmt.Println(" - The toSoil map is:", toSoil)
-	//fmt.Println(" - The toFertilizer map is:", toFertilizer)
-	//fmt.Println(" - The toWater map is:", toWater)
-	//fmt.Println(" - The toLight map is:", toLight)
-	//fmt.Println(" - The toTemperature map is:", toTemperature)
-	//fmt.Println(" - The toHumidity map is:", toHumidity)
-	//fmt.Println(" - The toLocation map is:", toLocation)
-	//fmt.Println("")
 
 	lowLocList := make([]int, len(seedsList)/2)
 	var wg sync.WaitGroup
@@ -268,4 +100,189 @@ func concurrentCalculation(id, sStart, sEnd int, w *int, wg *sync.WaitGroup) {
 	}
 	*w = lowLoc
 	fmt.Println("Done", id)
+}
+
+// load loads all input data
+func load(scn *bufio.Scanner) {
+	var s statusT = ini
+	for scn.Scan() {
+		l := scn.Text()
+		if s == ini {
+			// Seeds
+			fmt.Println(" Loading seeds")
+			loadSeeds(l)
+			s = soil
+		} else if s == soil {
+			// Soil
+			loadSeedToSoil(scn)
+			s = fertilizer
+		} else if s == fertilizer {
+			// Fertilizer
+			loadSoilToFertilizer(scn)
+			s = water
+		} else if s == water {
+			// Water
+			loadFertilizertoWater(scn)
+			s = light
+		} else if s == light {
+			// Light
+			loadWaterToLight(scn)
+			s = temperature
+		} else if s == temperature {
+			// Temperature
+			loadLightToTemperature(scn)
+			s = humidity
+		} else if s == humidity {
+			// Humidity
+			loadTemperatureToHumidity(scn)
+			s = location
+		} else if s == location {
+			// Location
+			loadHumidityToLocation(scn)
+			s = end
+		}
+	}
+}
+
+// loadSeeds loads the seeds into the variable seedsList
+func loadSeeds(l string) {
+	parts := strings.Split(l, ":")
+	seedNums := strings.Fields(parts[1])
+	for i := 0; i < len(seedNums); i++ {
+		n, _ := strconv.Atoi(seedNums[i])
+		seedsList = append(seedsList, n)
+	}
+}
+
+// loadSeedToSoil
+func loadSeedToSoil(scn *bufio.Scanner) {
+	scn.Scan()
+	scn.Text()
+	fmt.Println(" Loading seed-to-soil map")
+	scn.Scan()
+	l := scn.Text()
+	for l != "" {
+		nums := strings.Fields(l)
+		var m mapT
+		m.dst, _ = strconv.Atoi(nums[0])
+		m.src, _ = strconv.Atoi(nums[1])
+		m.ran, _ = strconv.Atoi(nums[2])
+		toSoil = append(toSoil, m)
+		scn.Scan()
+		l = scn.Text()
+	}
+}
+
+// loadSoilToFertilizer
+func loadSoilToFertilizer(scn *bufio.Scanner) {
+	scn.Scan()
+	scn.Text()
+	fmt.Println(" Loading soil-to-fertilizer map")
+	scn.Scan()
+	l := scn.Text()
+	for l != "" {
+		nums := strings.Fields(l)
+		var m mapT
+		m.dst, _ = strconv.Atoi(nums[0])
+		m.src, _ = strconv.Atoi(nums[1])
+		m.ran, _ = strconv.Atoi(nums[2])
+		toFertilizer = append(toFertilizer, m)
+		scn.Scan()
+		l = scn.Text()
+	}
+}
+
+// loadFertilizertoWater
+func loadFertilizertoWater(scn *bufio.Scanner) {
+	scn.Scan()
+	scn.Text()
+	fmt.Println(" Loading fertilizer-to-water map")
+	scn.Scan()
+	l := scn.Text()
+	for l != "" {
+		nums := strings.Fields(l)
+		var m mapT
+		m.dst, _ = strconv.Atoi(nums[0])
+		m.src, _ = strconv.Atoi(nums[1])
+		m.ran, _ = strconv.Atoi(nums[2])
+		toWater = append(toWater, m)
+		scn.Scan()
+		l = scn.Text()
+	}
+}
+
+// loadWaterToLight
+func loadWaterToLight(scn *bufio.Scanner) {
+	scn.Scan()
+	scn.Text()
+	fmt.Println(" Loading water-to-light map")
+	scn.Scan()
+	l := scn.Text()
+	for l != "" {
+		nums := strings.Fields(l)
+		var m mapT
+		m.dst, _ = strconv.Atoi(nums[0])
+		m.src, _ = strconv.Atoi(nums[1])
+		m.ran, _ = strconv.Atoi(nums[2])
+		toLight = append(toLight, m)
+		scn.Scan()
+		l = scn.Text()
+	}
+}
+
+// loadLightToTemperature
+func loadLightToTemperature(scn *bufio.Scanner) {
+	scn.Scan()
+	scn.Text()
+	fmt.Println(" Loading light-to-temperature map")
+	scn.Scan()
+	l := scn.Text()
+	for l != "" {
+		nums := strings.Fields(l)
+		var m mapT
+		m.dst, _ = strconv.Atoi(nums[0])
+		m.src, _ = strconv.Atoi(nums[1])
+		m.ran, _ = strconv.Atoi(nums[2])
+		toTemperature = append(toTemperature, m)
+		scn.Scan()
+		l = scn.Text()
+	}
+}
+
+// loadTemperatureToHumidity
+func loadTemperatureToHumidity(scn *bufio.Scanner) {
+	scn.Scan()
+	scn.Text()
+	fmt.Println(" Loading temperature-to-humidity map")
+	scn.Scan()
+	l := scn.Text()
+	for l != "" {
+		nums := strings.Fields(l)
+		var m mapT
+		m.dst, _ = strconv.Atoi(nums[0])
+		m.src, _ = strconv.Atoi(nums[1])
+		m.ran, _ = strconv.Atoi(nums[2])
+		toHumidity = append(toHumidity, m)
+		scn.Scan()
+		l = scn.Text()
+	}
+}
+
+// loadHumidityToLocation
+func loadHumidityToLocation(scn *bufio.Scanner) {
+	scn.Scan()
+	scn.Text()
+	fmt.Println(" Loading humidity-to-location map")
+	scn.Scan()
+	l := scn.Text()
+	for l != "" {
+		nums := strings.Fields(l)
+		var m mapT
+		m.dst, _ = strconv.Atoi(nums[0])
+		m.src, _ = strconv.Atoi(nums[1])
+		m.ran, _ = strconv.Atoi(nums[2])
+		toLocation = append(toLocation, m)
+		scn.Scan()
+		l = scn.Text()
+	}
 }

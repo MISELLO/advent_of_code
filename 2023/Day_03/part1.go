@@ -67,35 +67,8 @@ func (n *number) isAdjacentToSymbol() bool {
 		west = schematic[n.startX][n.startY-1 : n.startY]
 	}
 
-	// Checking north
-	for _, c := range north {
-		if c != '.' {
-			return true
-		}
-	}
-
-	// Checking south
-	for _, c := range south {
-		if c != '.' {
-			return true
-		}
-	}
-
-	// Checking east
-	for _, c := range east {
-		if c != '.' {
-			return true
-		}
-	}
-
-	// Checking west
-	for _, c := range west {
-		if c != '.' {
-			return true
-		}
-	}
-
-	return false
+	// Check directions
+	return checkDirections(north, south, east, west)
 }
 
 func main() {
@@ -163,4 +136,38 @@ func main() {
 		}
 	}
 	fmt.Println("The sum of the part numbers is", sum)
+}
+
+// checkDirections
+func checkDirections(north, south, east, west string) bool {
+
+	// Checking north
+	for _, c := range north {
+		if c != '.' {
+			return true
+		}
+	}
+
+	// Checking south
+	for _, c := range south {
+		if c != '.' {
+			return true
+		}
+	}
+
+	// Checking east
+	for _, c := range east {
+		if c != '.' {
+			return true
+		}
+	}
+
+	// Checking west
+	for _, c := range west {
+		if c != '.' {
+			return true
+		}
+	}
+
+	return false
 }

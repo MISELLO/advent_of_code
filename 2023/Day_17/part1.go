@@ -108,13 +108,13 @@ func aStar() int {
 		n := heap.Pop(available).(tNode)
 
 		// Check if it is the last point
-		if n.status.pos.x == len(heatLossMap[0])-1 && n.status.pos.y == len(heatLossMap)-1 {
+		if lastPoint(n.status.pos) {
 			return n.costF
 		}
 
 		// Neighbours
 		nl := turnLeft(n)
-		if valid(nl) && !visited[nl.status] {
+		if validAndNotVisited(nl, visited) {
 			x, e := pending[nl.status]
 			if (e && x > nl.costF) || !e {
 				heap.Push(available, nl)
@@ -122,7 +122,7 @@ func aStar() int {
 			}
 		}
 		nr := turnRight(n)
-		if valid(nr) && !visited[nr.status] {
+		if validAndNotVisited(nr, visited) {
 			x, e := pending[nr.status]
 			if (e && x > nr.costF) || !e {
 				heap.Push(available, nr)
@@ -130,7 +130,7 @@ func aStar() int {
 			}
 		}
 		ns := goStraight(n)
-		if valid(ns) && !visited[ns.status] {
+		if validAndNotVisited(ns, visited) {
 			x, e := pending[ns.status]
 			if (e && x > ns.costF) || !e {
 				heap.Push(available, ns)
@@ -235,4 +235,14 @@ func valid(n tNode) bool {
 
 	// Inbounds
 	return p.x >= 0 && p.y >= 0 && p.x < len(heatLossMap[0]) && p.y < len(heatLossMap)
+}
+
+// Valid And Not Visited
+func validAndNotVisited(nl tNode, visited map[tStatus]bool) bool {
+	return valid(nl) && !visited[nl.status]
+}
+
+// Last Point
+func lastPoint(p tPosition) bool {
+	return p.x == len(heatLossMap[0])-1 && p.y == len(heatLossMap)-1
 }

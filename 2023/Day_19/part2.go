@@ -115,8 +115,8 @@ func processLabel(itv tInterval, l string) int {
 	// We have to go deeper with that label
 	w := workflows[l]
 	var sum int
-        var sat, noSat tInterval
-        remain := itv
+	var sat, noSat tInterval
+	remain := itv
 	for i := 0; i < len(w); i++ {
 		if hasOp(w[i]) {
 			sat, noSat = ifRule(remain, w[i])
