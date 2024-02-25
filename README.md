@@ -16,9 +16,9 @@ Advent of Code (or AoC) is an annual set of Christmas-themed computer programmin
 
 The most interesting part of it is not the answer itself (actually you can get it [here](https://aoc-puzzle-solver.streamlit.app/)). It has much more value what you code in order to get the answer and what you learn in the process. If you get stuck you can always search for hints on [Reddit](https://www.reddit.com/r/adventofcode/).
 
-## About my code
+## Note
 
-Please note that the problems definition/explanation and the inputs needed to make the code of this project work belong to adventofcode and not me, so I can't share it.
+Please note that the problems definition/explanation and the inputs needed to make the code of this project work belong to [Advent of Code](https://adventofcode.com/) and not me, so I can't share it.
 
 ## Usage
 
