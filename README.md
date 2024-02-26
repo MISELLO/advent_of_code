@@ -22,7 +22,7 @@ Please note that the problems definition/explanation and the inputs needed to ma
 
 ## Usage
 
-Iside this repository you will find a folder for each year I have done. Inside this folder you will find one folder for each of the 25 days of the event. And inside the proper day you will find two [Go](https://golang.org/)) files named part1.go and part2.go. Each of this files corresponds to it's part of the puzzle.
+Inside this repository you will find a folder for each year I have done. Inside this folder you will find one folder for each of the 25 days of the event. And inside the proper day you will find two [Go](https://golang.org/)) files named part1.go and part2.go. Each of this files corresponds to it's part of the puzzle.
 
 If you want to execute one of this files you first need an input data as a text file. So, go to the [Advent of Code](https://adventofcode.com/) page and save any input, example or test of your own into a text file.
 
