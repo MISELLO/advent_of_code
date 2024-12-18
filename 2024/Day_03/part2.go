@@ -78,6 +78,24 @@ func process(s *tStatus, n1, n2 *int, c byte, do *bool) bool {
 
 	fmt.Printf("%s", string(c))
 
+	// We simplify this switch to avoid gocyclo over 15
+
+	switch *s {
+	case Letter_m, Letter_u, Letter_l:
+		return processMul(s, n1, n2, c, do)
+	case Letter_o, Letter_n, Letter_t:
+		return processDont(s, n1, n2, c, do)
+	case Apostrophe, OpenParMul, OpenParDont:
+		return processApostropheAndOpenParenthesis(s, n1, n2, c, do)
+	case CloseParDo, CloseParDont:
+		return processCloseParenthesis(s, n1, n2, c, do)
+	case Number_1, Number_2:
+		return processNumbers(s, n1, n2, c, do)
+	}
+	return false
+}
+
+func processMul(s *tStatus, n1, n2 *int, c byte, do *bool) bool {
 	switch *s {
 	case Letter_m:
 		if c == 'm' {
@@ -115,8 +133,12 @@ func process(s *tStatus, n1, n2 *int, c byte, do *bool) bool {
 		}
 		*s = Letter_m
 		return false
-	case Letter_d:
-		// Not used
+	}
+	return false
+}
+
+func processDont(s *tStatus, n1, n2 *int, c byte, do *bool) bool {
+	switch *s {
 	case Letter_o:
 		if c == 'o' {
 			*s = Letter_n
@@ -146,9 +168,9 @@ func process(s *tStatus, n1, n2 *int, c byte, do *bool) bool {
 		}
 		*s = Letter_m
 		return false
-	case Apostrophe:
-		if c == '\'' {
-			*s = Letter_t
+	case Letter_t:
+		if c == 't' {
+			*s = OpenParDont
 			return false
 		} else if c == 'm' {
 			*s = Letter_u
@@ -159,9 +181,15 @@ func process(s *tStatus, n1, n2 *int, c byte, do *bool) bool {
 		}
 		*s = Letter_m
 		return false
-	case Letter_t:
-		if c == 't' {
-			*s = OpenParDont
+	}
+	return false
+}
+
+func processApostropheAndOpenParenthesis(s *tStatus, n1, n2 *int, c byte, do *bool) bool {
+	switch *s {
+	case Apostrophe:
+		if c == '\'' {
+			*s = Letter_t
 			return false
 		} else if c == 'm' {
 			*s = Letter_u
@@ -187,8 +215,6 @@ func process(s *tStatus, n1, n2 *int, c byte, do *bool) bool {
 		}
 		*s = Letter_m
 		return false
-	case OpenParDo:
-		// Not used
 	case OpenParDont:
 		if c == '(' {
 			*s = CloseParDont
@@ -202,43 +228,12 @@ func process(s *tStatus, n1, n2 *int, c byte, do *bool) bool {
 		}
 		*s = Letter_m
 		return false
-	case Number_1:
-		if c >= '0' && c <= '9' {
-			*n1 = *n1*10 + int(c-'0')
-			return false
-		} else if c == ',' && *n1 > 0 && *n1 < 1000 {
-			*s = Number_2
-			return false
-		} else if c == 'm' {
-			*s = Letter_u
-			return false
-		} else if c == 'd' {
-			*s = Letter_o
-			return false
-		}
-		*s = Letter_m
-		return false
-	case Comma:
-		// Not used
-	case Number_2:
-		if c >= '0' && c <= '9' {
-			*n2 = *n2*10 + int(c-'0')
-			return false
-		} else if c == ')' && *n2 > 0 && *n2 < 1000 {
-			*s = Letter_m
-			fmt.Printf(" --> %d x %d = %d (do=%v)\n", *n1, *n2, *n1**n2, *do)
-			return true
-		} else if c == 'm' {
-			*s = Letter_u
-			return false
-		} else if c == 'd' {
-			*s = Letter_o
-			return false
-		}
-		*s = Letter_m
-		return false
-	case CloseParMul:
-		// Not used
+	}
+	return false
+}
+
+func processCloseParenthesis(s *tStatus, n1, n2 *int, c byte, do *bool) bool {
+	switch *s {
 	case CloseParDo:
 		if c == ')' {
 			*s = Letter_m
@@ -269,4 +264,47 @@ func process(s *tStatus, n1, n2 *int, c byte, do *bool) bool {
 		return false
 	}
 	return false
+}
+
+func processNumbers(s *tStatus, n1, n2 *int, c byte, do *bool) bool {
+	switch *s {
+	case Number_1:
+		if digit(c) {
+			*n1 = *n1*10 + int(c-'0')
+			return false
+		} else if c == ',' && *n1 > 0 && *n1 < 1000 {
+			*s = Number_2
+			return false
+		} else if c == 'm' {
+			*s = Letter_u
+			return false
+		} else if c == 'd' {
+			*s = Letter_o
+			return false
+		}
+		*s = Letter_m
+		return false
+	case Number_2:
+		if digit(c) {
+			*n2 = *n2*10 + int(c-'0')
+			return false
+		} else if c == ')' && *n2 > 0 && *n2 < 1000 {
+			*s = Letter_m
+			fmt.Printf(" --> %d x %d = %d (do=%v)\n", *n1, *n2, *n1**n2, *do)
+			return true
+		} else if c == 'm' {
+			*s = Letter_u
+			return false
+		} else if c == 'd' {
+			*s = Letter_o
+			return false
+		}
+		*s = Letter_m
+		return false
+	}
+	return false
+}
+
+func digit(c byte) bool {
+	return c >= '0' && c <= '9'
 }

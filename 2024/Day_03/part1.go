@@ -67,6 +67,20 @@ func process(s *tStatus, n1, n2 *int, c byte) bool {
 
 	fmt.Printf("%s", string(c))
 
+	// We simplify this switch to avoid gocyclo over 15
+
+	switch *s {
+	case Letter_m, Letter_u, Letter_l:
+		return processLetters(s, n1, n2, c)
+	case OpenParenthesis:
+		return processOpenParenthesis(s, n1, n2, c)
+	case Number_1, Number_2:
+		return processNumbers(s, n1, n2, c)
+	}
+	return false
+}
+
+func processLetters(s *tStatus, n1, n2 *int, c byte) bool {
 	switch *s {
 	case Letter_m:
 		if c == 'm' {
@@ -93,6 +107,12 @@ func process(s *tStatus, n1, n2 *int, c byte) bool {
 		}
 		*s = Letter_m
 		return false
+	}
+	return false
+}
+
+func processOpenParenthesis(s *tStatus, n1, n2 *int, c byte) bool {
+	switch *s {
 	case OpenParenthesis:
 		if c == '(' {
 			*n1 = 0
@@ -105,6 +125,12 @@ func process(s *tStatus, n1, n2 *int, c byte) bool {
 		}
 		*s = Letter_m
 		return false
+	}
+	return false
+}
+
+func processNumbers(s *tStatus, n1, n2 *int, c byte) bool {
+	switch *s {
 	case Number_1:
 		if c >= '0' && c <= '9' {
 			*n1 = *n1*10 + int(c-'0')
@@ -118,8 +144,6 @@ func process(s *tStatus, n1, n2 *int, c byte) bool {
 		}
 		*s = Letter_m
 		return false
-	case Comma:
-		// Not used
 	case Number_2:
 		if c >= '0' && c <= '9' {
 			*n2 = *n2*10 + int(c-'0')
@@ -134,8 +158,6 @@ func process(s *tStatus, n1, n2 *int, c byte) bool {
 		}
 		*s = Letter_m
 		return false
-	case CloseParenthesis:
-		// Not used
 	}
 	return false
 }
