@@ -34,6 +34,9 @@ cd advent_of_code/2023/Day_15/
 go run part1 /route_to_input_file/input.txt
 ```
 
+## Deployment
+I have done a [Github-pages](https://misello.github.io/advent_of_code/) where you can find more easily a link to the actual puzzle, a link to my code and how I did to find the solution of each part.
+
 ## Thanks
 
 Many thanks to [Eric Wastl](http://was.tl/) and all his team. Without you this would not be possible.
