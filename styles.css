@@ -75,10 +75,25 @@ a:hover {
 
 .part {
     /*background-color: #002200;*/
-    width: 100%;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
     background: rgba(255, 255, 255, 0.1);
     padding: 10px;
     margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 5px;
 }
 
+.part-title {
+    font-weight: bold;
+    color: #0f0;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.part-content {
+    color: #fff;
+    margin: 0;
+    text-align: left;
+}
