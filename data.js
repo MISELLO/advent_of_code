@@ -1,8 +1,19 @@
 const texts = {
 	"2023": {
 		"1" : {
-			part1: "",
-			part2: "" },
+			part1: "For each line we check each character and check if it's a digit.<br>"+
+				"We store the first and the last one, join them together and convert it to a number.<br>"+
+				"We add this number to the total and we get the resut.",
+			part2: "This can be done in many ways.<br>"+
+				"Instead of replacing the digits in words with their equivalent number and repeat what we dit on part 1,<br>"+
+				"I decided to work with indexes.<br>"+
+				"I declared an array/slice of the valid \"strings\". This is:<br>"+
+				"'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',<br>"+
+				"'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'<br>"+
+				"Then, for each line, I searched for this strings and stored the first and last index and their value"+
+				" (the value is the index of the array%10).<br>"+
+				"The number we are looking for is the first value * 10 + the last value.<br>"+
+				"We add the value of each line and we get the answer."},
 		"2" : {
 			part1: "",
 			part2: "" },
