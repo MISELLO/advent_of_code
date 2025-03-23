@@ -15,8 +15,13 @@ const texts = {
 				"The number we are looking for is the first value * 10 + the last value.<br>"+
 				"We add the value of each line and we get the answer."},
 		"2" : {
-			part1: "",
-			part2: "" },
+			part1: "The only possible issue here is by commiting an error processing the data.<br>"+
+				"When having a game loaded we check if all sets are correct by checking if"+
+				" the amount of each cube is higher than what we have been told at the start.<br>"+
+				"At the end of each game, if the game was valid, we add the game ID to the answer.",
+			part2: "This second part is easy if we process the data correctly, as on the first part.<br>"+
+				"I had a record of the maximum of each type of cube for each game, then multipy this"+
+				" maximums and add the result to the answer."},
 		"3" : {
 			part1: "",
 			part2: "" },
