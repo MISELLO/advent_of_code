@@ -20,7 +20,7 @@ const texts = {
 				" the amount of each cube is higher than what we have been told at the start.<br>" +
 				"At the end of each game, if the game was valid, we add the game ID to the answer.",
 			part2: "This second part is easy if we process the data correctly, as on the first part.<br>" +
-				"I had a record of the maximum of each type of cube for each game, then multipy this" +
+				"I had a record of the maximum of each type of cube for each game, then multiply this" +
 				" maximums and add the result to the answer."},
 		"3" : {
 			part1: "I first created a list of the numbers and thier position.<br>" +
@@ -31,11 +31,21 @@ const texts = {
 				" a gear or not and the position of this gear.<br>" +
 				"Then I iterate all numbers with gears and for each one I search for it's counterpart" +
 				" on the rest of the list to avoid counting a pair twice" +
-				" (It's counterpart will be a number with a gear at the same position).<br>"+
-				"Once found it's counterpart I multipy both values and add the result to the answer."},
+				" (It's counterpart will be a number with a gear at the same position).<br>" +
+				"Once found it's counterpart I multiply both values and add the result to the answer."},
 		"4" : {
-			part1: "",
-			part2: "" },
+			part1: "I isoleted each list of numbers in two slices.<br>" +
+				"Then, for each number of the first list I checked if it is present on the second one.<br>" +
+				"If the number is present I set the points of this card to 1 the first time and double" +
+				" it the other times.<br>" +
+				"When we are done with a card we add the points to the answer and take another one.",
+			part2: "This time I had to declare a card type that contains the two lists of numbers" +
+				" and a multiplyer.<br>" +
+				"After loading all the cards into a slice we proceed in a similar way to part 1 but" +
+				" instead of counting points we count the number of matches. <br>" +
+				"This means the next N cards (being N the number of matches) will have thier multiplyer" +
+				" increased by the current card multiplyer.<br>" +
+				"To get the answer I had to iterate all cards again and add all multiplyers."},
 		"5" : {
 			part1: "",
 			part2: "" },
