@@ -47,8 +47,30 @@ const texts = {
 				" increased by the current card multiplyer.<br>" +
 				"To get the answer I had to iterate all cards again and add all multiplyers."},
 		"5" : {
-			part1: "",
-			part2: "" },
+			part1: "First I defined several states to load the data. Each state represents what we" +
+				" are going to read from the input file.<br>" +
+				"The structure that will contain the data is just a struct with 3 integers:<br>" +
+				" Destination, source and range (on this order).<br>" +
+				"Each conversion \"map\" is a slice of this structure, except the seeds, this is a" +
+				" simple slice of integers.<br>" +
+				"I load the information on this structures with 8 functions, one for the seeds and" +
+				" the rest for the conversion maps.<br>" +
+				"I use the states mentioned before to invoque this functions in order (and seems the" +
+				" states are not really necessary).<br>" +
+				"Now we need to define the convert function, that takes an int and a map and returns" +
+				" the proper destination. To find the destination we iterate the map searching if the" +
+				" given int falls into the range (between source and source+range) if that's the case" +
+				" we return the destination + range, if we don't find any range that contains the given" +
+				" int, we return the int directly because: \"Any source numbers that aren't mapped" +
+				" correspond to the same destination number\".<br>" +
+				"Once all information is loaded I iterated the seeds, did the cascade of conversions" +
+				" until location and kept track of the lowest one.<br>" +
+				"When the iteration is done the answer is the lowest one we found.",
+			part2: "Now, instead of a few seeds we need to plant several ranges of seeds.<br>" +
+				"To have it solved in a timely manner I decided to execute each range in a separated" +
+				" thread and each thread leaves the lowest location to a predefined position of" +
+				" a slice for this purpose.<br>" +
+				"At the end, I just have to search in this slice of lowest locations to find the lowest."},
 		"6" : {
 			part1: "",
 			part2: "" },
