@@ -39,6 +39,8 @@ I have done a [Github-pages](https://misello.github.io/advent_of_code/) where yo
 
 ## Thanks
 
-Many thanks to [Eric Wastl](http://was.tl/) and all his team. Without you this would not be possible.
+First of all, thanks to [Guillem](https://github.com/guillem) to introduce me to this amazing anual challenge.
+Also thanks to [Eric Wastl](http://was.tl/) and all his team. Without you this would not be possible.
 
-And if the reader has the chance, you should [support](https://adventofcode.com/support) him directly.
+And if the reader has the chance, you should [support](https://adventofcode.com/support) the creator directly.
+
