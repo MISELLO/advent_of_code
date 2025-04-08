@@ -72,8 +72,32 @@ const texts = {
 				" a slice for this purpose.<br>" +
 				"At the end, I just have to search in this slice of lowest locations to find the lowest."},
 		"6" : {
-			part1: "",
-			part2: "" },
+			part1: "I load the list of times.<br>" +
+				"I load the list of distances.<br>" +
+				"I make sure this two lists have the same length.<br>" +
+				"I start counting the number of solutions for each race.<br>" +
+				"To know if a certain amount of milliseconds is a solution I just apply the formula:<br>" +
+				"&nbsp;distance = speed (time the button has been pressed) * time (remaining time)<br>" +
+				"I apply this formula to every possible time between 1 to what the race lasts - 1" +
+				" (> 0 because I want the boat to move and what the race lasts - 1 because I don't" +
+				" want to be all the time pressing the button and not start).<br>" +
+				"Once I know how many ways I can beat each race, I multiply the number of ways of each" +
+				" race to know the number of ways I can beat all the game.",
+			part2: "For this part we join the times in order to have only 1 big time.<br>" +
+				"We do the same for the distances and have only 1 big distance.<br>" +
+				"In order to obtain the answer we don't need to iterate all possible times because" +
+				" we will only have 3 possible cases:<br>" +
+				"&nbsp;1.- Pressed the button for too short time.<br>" +
+				"&nbsp;2.- Pressed the button enough time.<br>" +
+				"&nbsp;3.- Pressed the button for too much time.<br>" +
+				"We need to find where the second case satisfies, for that we will only search" +
+				" from the start and from the end where this complies and do the difference.<br>" +
+				"To do that we will do a loop to know the lower bound, from 1 increasing until we" +
+				" find that we would win applying the formula from before.<br>" +
+				"Then we will do the same loop but starting from the maximum time -1 decreasing" +
+				" until we find that we would win.<br>" +
+				"Once we find this two bounds, the difference + 1 is the number of ways we can" +
+				" beat the game." },
 		"7" : {
 			part1: "",
 			part2: "" },
